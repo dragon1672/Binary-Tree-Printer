@@ -46,8 +46,8 @@ public class TreePrinter {
 		if(node == null) return;
 
 		//print node data
-		String data = node.toString();
-		insertStringToCharArrayCentered(screen,pos,node.toString());
+		String data = node.getString();
+		insertStringToCharArrayCentered(screen,pos,data);
 		//should traverse
 		if(height != 1) {
 			//trust the math
@@ -107,9 +107,5 @@ public class TreePrinter {
 		public Coord add(Coord that)   { return new Coord(this.x + that.x, this.y + that.y); }
 		public Coord mult(float l)     { return new Coord((int)(l * this.x),(int)( l * this.y)); }
 	}
-}
-interface BinaryNode {
-	BinaryNode getLeft();
-	BinaryNode getRight();
 }
 
