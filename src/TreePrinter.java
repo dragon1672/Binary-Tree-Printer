@@ -4,14 +4,17 @@
 public class TreePrinter {
 	//prints a tree into a character array
 	//nodePrintLength is the size given to each node to print
-	public static char[][] prettyPrint(BinaryNode head, int nodePrintLength) {
-		return prettyPrint(head,getHeight(head),nodePrintLength);
+	public static char[][] getCharArray(BinaryNode head, int nodePrintLength) {
+		return getCharArray(head, getHeight(head), nodePrintLength);
 	}
 
 
 	//prints treeHeight levels into a character array
 	//nodePrintLength is the size given to each node to print
-	public static char[][] prettyPrint(BinaryNode head, int treeHeight, int nodePrintLength) {
+	public static char[][] getCharArray(BinaryNode head, int treeHeight, int nodePrintLength) {
+		//odd number print lengths make math easier
+		if(nodePrintLength % 2 == 0) nodePrintLength++;
+
 		int printHeight = treeHeight+1; // plus 1 for copyright
 		int printWidth  = getWidth(treeHeight,nodePrintLength);
 
@@ -41,11 +44,8 @@ public class TreePrinter {
 	//returns printout of tring treeHeight levels deep
 	//nodePrintLength is the size given to each node to print
 	public static String getString(BinaryNode head, int treeHeight, int nodePrintLength) {
-		//odd number print lengths make math easier
-		if(nodePrintLength % 2 == 0) nodePrintLength++;
-
 		// get printout
-		char [][] screen = prettyPrint(head,treeHeight,nodePrintLength);
+		char [][] screen = getCharArray(head, treeHeight, nodePrintLength);
 
 		//convert into string
 		StringBuilder ret = new StringBuilder();
@@ -59,6 +59,27 @@ public class TreePrinter {
 		}
 		return ret.toString();
 	}
+
+
+
+	public static void print(BinaryNode head, int nodePrintLength) {
+		print(head,getHeight(head),nodePrintLength);
+	}
+	public static void print(BinaryNode head, int treeHeight, int nodePrintLength) {
+		// get printout
+		char [][] screen = getCharArray(head, treeHeight, nodePrintLength);
+
+		//print
+		char [] tmep = new char[1];
+		for(int i=0;i<screen.length;i++) {
+			for(int j=0;j<screen[i].length;j++) {
+				char toPrint = screen[i][j] == tmep[0] ? ' ' : screen[i][j]; // replace uninitialized with ' '
+				System.out.print(toPrint);
+			}
+			System.out.print("\n");
+		}
+	}
+
 
 
 	//returns the required width to print given tree
