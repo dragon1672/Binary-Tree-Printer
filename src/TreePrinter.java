@@ -49,8 +49,8 @@ public class TreePrinter {
 		int printWidth  = getWidth(treeHeight,nodePrintLength);
 
 		//increase width if needed to fix copyright
-		String copyRight = "Tree display provided by Anthony Corbin";
-		printWidth  = Math.max(printWidth,copyRight.length()); // must be at least the length of the copyright
+		//String copyRight = "Tree display provided by Anthony Corbin";
+		//printWidth  = Math.max(printWidth,copyRight.length()); // must be at least the length of the copyright
 
 		//allocating required space
 		char [][] screen = new char[printHeight][printWidth];
@@ -62,8 +62,8 @@ public class TreePrinter {
 		printToArray(screen,head,treeHeight,new Coord(printWidth / 2,0),nodePrintLength);
 
 		//print copyright
-		insertStringToCharArray(screen,new Coord(0,printHeight-1),copyRight);
-		return replacePlaceHolder(screen);
+		//insertStringToCharArray(screen,new Coord(0,printHeight-1),copyRight);
+		return replacePlaceHolder(trim(screen));
 	}
 
 	public static char[][] replacePlaceHolder(char[][]screen) {
@@ -78,8 +78,32 @@ public class TreePrinter {
 	}
 
 	public static char[][] trim(char[][] screen) {
-		List<Integer> colsToKill = new ArrayList<Integer>();
-		return screen;
+		HashSet<Integer> colsToKill = new HashSet<Integer>();
+		int height= screen.length;
+		int width  = screen[0].length; // jank
+		for(int x=0;x<width;x++) {
+			boolean canTrash = true;
+			for(int y=0;y<height && canTrash;y++) {
+				 canTrash = trashable.contains(screen[y][x]);
+			}
+			if(canTrash) {
+				colsToKill.add(x);
+			}
+		}
+		if(colsToKill.isEmpty()) return screen;
+
+		char [][] ret = new char[height][width-colsToKill.size()];
+		int retCol = 0;
+		for(int x=0;x<width;x++) {
+			if(!colsToKill.contains(x)) {
+				for (int y = 0; y < height; y++) {
+					ret[y][retCol] = screen[y][x];
+				}
+				retCol++;
+			}
+		}
+
+		return ret;
 
 	}
 
