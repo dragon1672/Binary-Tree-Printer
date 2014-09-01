@@ -1,8 +1,6 @@
 import sun.reflect.generics.tree.Tree;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Anthony on 8/11/2014.
@@ -18,6 +16,20 @@ public class TreePrinter {
 	private static final char RIGHT_DOWN_PLACEHOLDER  = 2;
 	private static final char SIDE_WAYS_PLACEHOLDER  = 3;
 	private static final char SPACE_PLACEHOLDER  = 4;
+
+	private static final HashMap<Character,Character> replaceChars;
+	private static final HashSet<Character> trashable;
+	static {
+		replaceChars = new HashMap<Character, Character>();
+		replaceChars.put(LEFT_DOWN_PLACEHOLDER, LEFT_DOWN);
+		replaceChars.put(RIGHT_DOWN_PLACEHOLDER,RIGHT_DOWN);
+		replaceChars.put(SIDE_WAYS_PLACEHOLDER, SIDE_WAYS);
+		replaceChars.put(SPACE_PLACEHOLDER,     ' ');
+
+		trashable = new HashSet<Character>();
+		trashable.add(TreePrinter.SIDE_WAYS_PLACEHOLDER);
+		trashable.add(TreePrinter.SPACE_PLACEHOLDER);
+	}
 
 
 
@@ -57,10 +69,9 @@ public class TreePrinter {
 	public static char[][] replacePlaceHolder(char[][]screen) {
 		for(int i=0;i<screen.length;i++) {
 			for (int j = 0; j < screen[i].length; j++) {
-				if(screen[i][j] == LEFT_DOWN_PLACEHOLDER ) screen[i][j] = LEFT_DOWN;
-				if(screen[i][j] == RIGHT_DOWN_PLACEHOLDER) screen[i][j] = RIGHT_DOWN;
-				if(screen[i][j] == SIDE_WAYS_PLACEHOLDER ) screen[i][j] = SIDE_WAYS;
-				if(screen[i][j] == SPACE_PLACEHOLDER     ) screen[i][j] = ' ';
+				if(replaceChars.containsKey(screen[i][j])) {
+					screen[i][j] = replaceChars.get(screen[i][j]);
+				}
 			}
 		}
 		return screen;
