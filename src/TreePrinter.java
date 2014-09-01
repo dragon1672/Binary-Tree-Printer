@@ -1,8 +1,26 @@
+import sun.reflect.generics.tree.Tree;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by Anthony on 8/11/2014.
  */
 public class TreePrinter {
 	//prints a tree into a character array
+
+	private static final char LEFT_DOWN = '/';
+	private static final char RIGHT_DOWN = '\\';
+	private static final char SIDE_WAYS = '-';
+
+	private static final char LEFT_DOWN_PLACEHOLDER = 1;
+	private static final char RIGHT_DOWN_PLACEHOLDER  = 2;
+	private static final char SIDE_WAYS_PLACEHOLDER  = 3;
+	private static final char SPACE_PLACEHOLDER  = 4;
+
+
+
 	//nodePrintLength is the size given to each node to print
 	public static char[][] getCharArray(BinaryNode head, int nodePrintLength) {
 		return getCharArray(head, getHeight(head), nodePrintLength);
@@ -24,13 +42,34 @@ public class TreePrinter {
 
 		//allocating required space
 		char [][] screen = new char[printHeight][printWidth];
+		for(int i=0;i<screen.length;i++) {
+			Arrays.fill(screen[i],SPACE_PLACEHOLDER);
+		}
 
 		//print tree starting in the middle of the screen
 		printToArray(screen,head,treeHeight,new Coord(printWidth / 2,0),nodePrintLength);
 
 		//print copyright
 		insertStringToCharArray(screen,new Coord(0,printHeight-1),copyRight);
+		return replacePlaceHolder(screen);
+	}
+
+	public static char[][] replacePlaceHolder(char[][]screen) {
+		for(int i=0;i<screen.length;i++) {
+			for (int j = 0; j < screen[i].length; j++) {
+				if(screen[i][j] == LEFT_DOWN_PLACEHOLDER ) screen[i][j] = LEFT_DOWN;
+				if(screen[i][j] == RIGHT_DOWN_PLACEHOLDER) screen[i][j] = RIGHT_DOWN;
+				if(screen[i][j] == SIDE_WAYS_PLACEHOLDER ) screen[i][j] = SIDE_WAYS;
+				if(screen[i][j] == SPACE_PLACEHOLDER     ) screen[i][j] = ' ';
+			}
+		}
 		return screen;
+	}
+
+	public static char[][] trim(char[][] screen) {
+		List<Integer> colsToKill = new ArrayList<Integer>();
+		return screen;
+
 	}
 
 
@@ -49,11 +88,9 @@ public class TreePrinter {
 
 		//convert into string
 		StringBuilder ret = new StringBuilder();
-		char [] tmep = new char[1];
 		for(int i=0;i<screen.length;i++) {
 			for(int j=0;j<screen[i].length;j++) {
-				char toPrint = screen[i][j] == tmep[0] ? ' ' : screen[i][j];
-				ret.append(toPrint);
+				ret.append(screen[i][j]);
 			}
 			ret.append("\n");
 		}
@@ -73,7 +110,7 @@ public class TreePrinter {
 		char [] tmep = new char[1];
 		for(int i=0;i<screen.length;i++) {
 			for(int j=0;j<screen[i].length;j++) {
-				char toPrint = screen[i][j] == tmep[0] ? ' ' : screen[i][j]; // replace uninitialized with ' '
+				char toPrint = screen[i][j] == SPACE_PLACEHOLDER ? ' ' : screen[i][j]; // replace uninitialized with ' '
 				System.out.print(toPrint);
 			}
 			System.out.print("\n");
@@ -106,8 +143,8 @@ public class TreePrinter {
 
 			//printing the pretty
 			for(int i=1;i<=numOfDashes;i++) {
-				char printL = i == numOfDashes ? '/'  : '-'; // character to be printed
-				char printR = i == numOfDashes ? '\\' : '-'; // character to be printed
+				char printL = i == numOfDashes ? LEFT_DOWN_PLACEHOLDER  : SIDE_WAYS_PLACEHOLDER; // character to be printed
+				char printR = i == numOfDashes ? RIGHT_DOWN_PLACEHOLDER : SIDE_WAYS_PLACEHOLDER; // character to be printed
 				offset += 1;
 				if(node.getLeft()  != null) insertStringToCharArray(screen,pos.add(-offset,0),printL);  // PRINT!!
 				if(node.getRight() != null) insertStringToCharArray(screen,pos.add( offset,0),printR); // PRINT!!
