@@ -15,16 +15,16 @@ namespace Binary_Tree_Printer
 		/// Returns Node to the left of current node
 		/// </summary>
 		/// <returns>Node left of current</returns>
-		IPrintableBinaryNode getLeft();
+		IPrintableBinaryNode GetLeft();
 		/// <summary>
 		/// Returns Node to the right of current node
 		/// </summary>
 		/// <returns>Node right of current</returns>
-		IPrintableBinaryNode getRight();
+		IPrintableBinaryNode GetRight();
 		/// <summary>
 		/// the data of the node represented as a string
 		/// </summary>
 		/// <returns>the data of the node</returns>
-		string getString();
+		string GetString();
 	}
 }
