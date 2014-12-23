@@ -1,5 +1,3 @@
-import sun.reflect.generics.tree.Tree;
-
 import java.util.*;
 
 /**
@@ -84,7 +82,7 @@ public class TreePrinter {
 		for(int x=0;x<width;x++) {
 			boolean canTrash = true;
 			for(int y=0;y<height && canTrash;y++) {
-				 canTrash = trashable.contains(screen[y][x]);
+				canTrash = trashable.contains(screen[y][x]);
 			}
 			if(canTrash) {
 				colsToKill.add(x);
@@ -214,7 +212,7 @@ public class TreePrinter {
 		return 1 + Math.max(getHeight(theGuy.getLeft()),getHeight(theGuy.getRight()));
 	}
 
-	//Immunitable
+	//Immutable
 	//Allows for some vector math
 	private static class Coord {
 		private double x;
