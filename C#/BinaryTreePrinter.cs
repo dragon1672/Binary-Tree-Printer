@@ -15,10 +15,10 @@ namespace Binary_Tree_Printer
 		private const char RIGHT_DOWN = '\\';
 		private const char SIDE_WAYS = '-';
 
-		private static char LEFT_DOWN_PLACEHOLDER = 1;
-		private static char RIGHT_DOWN_PLACEHOLDER = 2;
-		private static char SIDE_WAYS_PLACEHOLDER = 3;
-		private static char SPACE_PLACEHOLDER = 4;
+		private static char LEFT_DOWN_PLACEHOLDER = (char) 1;
+		private static char RIGHT_DOWN_PLACEHOLDER = (char) 2;
+		private static char SIDE_WAYS_PLACEHOLDER = (char) 3;
+		private static char SPACE_PLACEHOLDER = (char) 4;
 
 		private static Dictionary<char, char> replaceChars = new Dictionary<char, char>()
 		{
@@ -41,7 +41,7 @@ namespace Binary_Tree_Printer
 		/// <param name="head">root to print from</param>
 		/// <param name="nodePrintLength">max space allocated for printing node's data</param>
 		/// <returns></returns>
-		public static char[][] getCharArray(IPrintableBinaryNode head, int nodePrintLength)
+		public static char[,] getCharArray(IPrintableBinaryNode head, int nodePrintLength)
 		{
 			return getCharArray(head, getHeight(head), nodePrintLength);
 		}
@@ -54,7 +54,7 @@ namespace Binary_Tree_Printer
 		/// <param name="treeHeight">depth to print tree</param>
 		/// <param name="nodePrintLength">max space allocated for printing node's data</param>
 		/// <returns></returns>
-		public static char[][] getCharArray(IPrintableBinaryNode head, int treeHeight, int nodePrintLength)
+		public static char[,] getCharArray(IPrintableBinaryNode head, int treeHeight, int nodePrintLength)
 		{
 			//if print length is odd number everything can be centered properly (easier math)
 			if (nodePrintLength%2 == 0) nodePrintLength++;
@@ -64,7 +64,7 @@ namespace Binary_Tree_Printer
 
 			//increase width if needed to fix copyright
 			string copyRight = "Tree display provided by Anthony Corbin";
-			printWidth = Math.max(printWidth, copyRight.length()); // must be at least the length of the copyright
+			printWidth = Math.Max(printWidth, copyRight.Length); // must be at least the length of the copyright
 
 			//allocating required space
 			char[,] screen = new char[printHeight, printWidth];
@@ -84,54 +84,50 @@ namespace Binary_Tree_Printer
 			return replacePlaceHolder(trim(screen));
 		}
 
-		public static char[][] replacePlaceHolder(char[][] screen)
+		public static char[,] replacePlaceHolder(char[,] screen)
 		{
-			for (int i = 0; i < screen.length; i++)
+			for (int i = 0; i < screen.GetLength(0); i++)
 			{
-				for (int j = 0; j < screen[i].length; j++)
+				for (int j = 0; j < screen.GetLength(1); j++)
 				{
-					if (replaceChars.containsKey(screen[i][j]))
+					if (replaceChars.ContainsKey(screen[i,j]))
 					{
-						screen[i][j] = replaceChars.get(screen[i][j]);
+						screen[i,j] = replaceChars[screen[i,j]];
 					}
 				}
 			}
 			return screen;
 		}
 
-		public static char[][] trim(char[][] screen)
+		public static char[,] trim(char[,] screen)
 		{
-			HashSet<Integer> colsToKill = new HashSet<Integer>();
-			int height = screen.length;
-			int width = screen[0].length; // jank
+			HashSet<int> colsToKill = new HashSet<int>();
+			int height = screen.GetLength(0);
+			int width = screen.GetLength(1);
 			for (int x = 0; x < width; x++)
 			{
-				boolean canTrash = true;
+				bool canTrash = true;
 				for (int y = 0; y < height && canTrash; y++)
 				{
-					canTrash = trashable.contains(screen[y][x]);
+					canTrash = trashable.Contains(screen[y,x]);
 				}
 				if (canTrash)
 				{
-					colsToKill.add(x);
+					colsToKill.Add(x);
 				}
 			}
-			if (colsToKill.isEmpty()) return screen;
+			if (colsToKill.Count == 0) return screen;
 
-			char[][] ret = new char[height][
-			width - colsToKill.size()]
-			;
+			char[,] ret = new char[height,width - colsToKill.Count];
 			int retCol = 0;
 			for (int x = 0; x < width; x++)
 			{
-				if (!colsToKill.contains(x))
+				if (colsToKill.Contains(x)) continue;
+				for (int y = 0; y < height; y++)
 				{
-					for (int y = 0; y < height; y++)
-					{
-						ret[y][retCol] = screen[y][x];
-					}
-					retCol++;
+					ret[y,retCol] = screen[y,x];
 				}
+				retCol++;
 			}
 
 			return ret;
@@ -152,19 +148,19 @@ namespace Binary_Tree_Printer
 		public static string getString(IPrintableBinaryNode head, int treeHeight, int nodePrintLength)
 		{
 			// get printout
-			char[][] screen = getCharArray(head, treeHeight, nodePrintLength);
+			char[,] screen = getCharArray(head, treeHeight, nodePrintLength);
 
 			//convert into string
 			StringBuilder ret = new StringBuilder();
-			for (int i = 0; i < screen.length; i++)
+			for (int i = 0; i < screen.GetLength(0); i++)
 			{
-				for (int j = 0; j < screen[i].length; j++)
+				for (int j = 0; j < screen.GetLength(1); j++)
 				{
-					ret.append(screen[i][j]);
+					ret.Append(screen[i,j]);
 				}
-				ret.append("\n");
+				ret.Append("\n");
 			}
-			return ret.toString();
+			return ret.ToString();
 		}
 
 
@@ -177,20 +173,18 @@ namespace Binary_Tree_Printer
 		public static void print(IPrintableBinaryNode head, int treeHeight, int nodePrintLength)
 		{
 			// get printout
-			char[][] screen = getCharArray(head, treeHeight, nodePrintLength);
+			char[,] screen = getCharArray(head, treeHeight, nodePrintLength);
 
 			//print
 			char[] tmep = new char[1];
-			for (int i = 0; i < screen.length; i++)
+			for (int i = 0; i < screen.GetLength(0); i++)
 			{
-				for (int j = 0; j < screen[i].length; j++)
+				for (int j = 0; j < screen.GetLength(1); j++)
 				{
-					char toPrint = screen[i][j] == SPACE_PLACEHOLDER ? ' ' : screen[i][j]; // replace uninitialized with ' '
-					System.out.
-					print(toPrint);
+					char toPrint = screen[i,j] == SPACE_PLACEHOLDER ? ' ' : screen[i,j]; // replace uninitialized with ' '
+					Console.Write(toPrint);
 				}
-				System.out.
-				print("\n");
+				Console.Write("\n");
 			}
 		}
 
@@ -201,11 +195,11 @@ namespace Binary_Tree_Printer
 		{
 			// also try out 3 for a at least 1 - in each tree level
 			int spacing = 1;
-			return (spacing + nodePrintLength)*(int) Math.pow(2, height - 1) - 1; // trust my math
+			return (spacing + nodePrintLength)*(int) Math.Pow(2, height - 1) - 1; // trust my math
 		}
 
 		//prints tree to char[][] starting at pos
-		private static void printToArray(char[][] screen, IPrintableBinaryNode node, int height, Coord pos, int dataLength)
+		private static void printToArray(char[,] screen, IPrintableBinaryNode node, int height, Coord pos, int dataLength)
 		{
 			if (node == null) return;
 
@@ -237,24 +231,24 @@ namespace Binary_Tree_Printer
 		}
 
 		//centers given string on pos
-		private static void insertStringToCharArrayCentered(char[][] screen, Coord pos, string data)
+		private static void insertStringToCharArrayCentered(char[,] screen, Coord pos, string data)
 		{
-			pos = new Coord(pos.getX() - data.length()/2, pos.getY());
+			pos = new Coord(pos.getX() - data.Length/2, pos.getY());
 			insertStringToCharArray(screen, pos, data);
 		}
 
 		//print character at pos
-		private static void insertStringToCharArray(char[][] screen, Coord pos, char data)
+		private static void insertStringToCharArray(char[,] screen, Coord pos, char data)
 		{
-			screen[(int) pos.getY()][(int) pos.getX()] = data;
+			screen[(int) pos.getY(),(int) pos.getX()] = data;
 		}
 
 		//prints string starting at pos
-		private static void insertStringToCharArray(char[][] screen, Coord pos, string data)
+		private static void insertStringToCharArray(char[,] screen, Coord pos, string data)
 		{
-			for (int i = 0; i < data.length(); i++)
+			for (int i = 0; i < data.Length; i++)
 			{
-				screen[(int) pos.getY()][(int) pos.getX() + i] = data[i];
+				screen[(int) pos.getY(),(int) pos.getX() + i] = data[i];
 			}
 		}
 
@@ -262,7 +256,7 @@ namespace Binary_Tree_Printer
 		private static int getHeight(IPrintableBinaryNode theGuy)
 		{
 			if (theGuy == null) return 0;
-			return 1 + Math.max(getHeight(theGuy.getLeft()), getHeight(theGuy.getRight()));
+			return 1 + Math.Max(getHeight(theGuy.getLeft()), getHeight(theGuy.getRight()));
 		}
 	}
 
