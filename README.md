@@ -3,6 +3,8 @@ Binary-Tree-Printer
 
 Creates a prudy display of a binary tree
 
+Very fast run time since it uses magical math for calculating tree size. 
+
 
 Example Trees:
 --------------
