@@ -3,7 +3,13 @@ Binary-Tree-Printer
 
 Creates a prudy display of a binary tree
 
-Very fast run time since it uses magical math for calculating tree size. 
+Very fast run time since it uses magical math for calculating tree width.
+
+to get the required width for printing a tree just
+(spacing + nodePrintLength)*(int)Math.pow(2,height-1) - 1;
+
+
+The latest version of this program will also consolidate the tree, so there isn't excess white space
 
 
 Example Trees:
