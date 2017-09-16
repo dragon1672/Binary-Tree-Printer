@@ -1,9 +1,5 @@
 # Binary-Tree-Printer
 
-[![pipeline status](https://gitlab.com/dragon1672/Binary-Tree-Printer/badges/master/pipeline.svg)](https://gitlab.com/dragon1672/Binary-Tree-Printer/commits/master)
-
-[![coverage report](https://gitlab.com/dragon1672/Binary-Tree-Printer/badges/master/coverage.svg)](https://gitlab.com/dragon1672/Binary-Tree-Printer/commits/master)
-
 Creates a prudy display of a binary tree
 
 Very fast run time since it uses magical math for calculating tree size. 
